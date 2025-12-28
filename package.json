@@ -1,0 +1,20 @@
+{
+  "name": "auth-core-db",
+  "version": "1.0.0",
+  "description": "Auth with Password-less",
+  "homepage": "https://github.com/BackendExpert/auth-core-db#readme",
+  "bugs": {
+    "url": "https://github.com/BackendExpert/auth-core-db/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BackendExpert/auth-core-db.git"
+  },
+  "license": "ISC",
+  "author": "jehankandy",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
