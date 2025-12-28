@@ -1,4 +1,4 @@
-exports.defaultEmail = async ({project}) => {
+exports.defaultLoginOTPEmail = async ({email, otp, project}) => {
     const displayName = email.split("@")[0];
 
     await sendEmail({
