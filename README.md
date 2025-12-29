@@ -184,4 +184,4 @@ router.post("/auth/create-auth", AuthController.createAuth);
 
 ## License
 
-- [MIT License]()
+- [MIT License](https://github.com/BackendExpert/auth-core-db/blob/master/LICENSE)
