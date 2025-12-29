@@ -3,7 +3,7 @@ const Role = require("../../../models/role.model.js")
 const UserOTP = require("../../../models/userotp.model.js")
 const bcrypt = require("bcrypt")
 
-const { defaultLoginOTPEmail, genarateOTP, sendEmail, } = require("otp-core-email-core")
+const { defaultLoginOTPEmail, genarateOTP, sendEmail, } = require("@jehankandy/otp-core-email-core")
 
 const logUserAction = require("../utils/logUserAction")
 // const tokenCreator = require("../utils/generateToken")
