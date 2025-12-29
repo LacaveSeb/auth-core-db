@@ -1,5 +1,7 @@
 const User = require("../../../models/user.model.js")
 const Role = require("../../../models/role.model.js")
+const UserOTP = require("../../../models/userotp.model.js")
+const bcrypt = require("bcrypt")
 
 const { defaultLoginOTPEmail, genarateOTP, sendEmail, } = require("otp-core-email-core")
 
