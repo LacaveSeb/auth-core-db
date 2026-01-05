@@ -1,34 +1,39 @@
 # 🔐 OTP Auth Core (Email-based Authentication)
 
-A lightweight Node.js authentication core for email + OTP login/registration, built with Express, Joi, JWT, MongoDB, and designed for plug-and-play usage in modern backend projects.
+- A lightweight Node.js authentication core for email + OTP login/registration, built with Express, Joi, JWT, MongoDB, and designed for plug-and-play usage in modern backend projects.
 
-This package handles:
+- This package provides a ready-to-use authentication flow with minimal setup while keeping full control in your main backend.
+
+## ✨ Features
 
 - Email-based OTP authentication
 
 - Auto user creation on first login
 
-- Secure OTP hashing
+- Secure OTP hashing & expiry
+
+- Login attempt tracking
 
 - User action logging
 
-- Clean DTO & Joi validation architecture
+- Clean DTO + Joi validation structure
 
-## Required Peer Dependency (⚠️ MUST INSTALL)
+- JWT-based authentication
 
-- This version requires the following package for OTP generation & email delivery:
+## 📦 Installation
 
 ```bash
 
-npm install @jehankandy/otp-core-email-core
+npm install @jehankandy/auth-core-db
 
 ```
 
-`Without this package, OTP generation and email sending will not work`
+- No additional OTP or email core packages are required.
 
-## Environment Variables
 
-- Create a `.env` file:
+## 🔧 Environment Variables
+
+- Create or update a .env file in your root backend folder:
 
 ```env
 
@@ -36,21 +41,47 @@ PROJECT_NAME=MyProject
 JWT_SECRET=your_jwt_secret
 MONGO_URI=mongodb://localhost:27017/yourdb
 
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+PROJECT_NAME="your-project-name"
+
 ```
 
-## MongoDB Connection (Required)
+## 🗄️ MongoDB (Required)
 
-- Ensure MongoDB is connected before using this package.
+- MongoDB must be connected before using this package
 
-## Required Mongoose Models (Mandatory)
+- The package does not create models automatically
 
-- Your project MUST include the following models with the exact structure.
+## 📁 Required Project Structure
 
-- following name the model files
+- Your backend must follow this structure:
 
-- all files must be in `models/` folder
+```pgsql
 
-### Role Model `role.model.js`
+root-backend/
+├── models/
+│   ├── role.model.js
+│   ├── user.model.js
+│   ├── userlog.model.js
+│   └── userotp.model.js
+│
+├── routes/
+│   └── auth.route.js
+│
+├── .env
+└── app.js / server.js
+
+
+```
+
+## 🧩 Required Mongoose Models (MANDATORY)
+
+- These models are NOT included in the npm package.
+
+- They must exist in your backend under `models/`.
+
+### Role Model `(models/role.model.js)`
 
 ```js
 
@@ -64,32 +95,53 @@ const roleSchema = new mongoose.Schema({
 module.exports = mongoose.model("Role", roleSchema);
 
 
+
 ```
 
-- ⚠️ A default role named `user` must exist in the database.
+### ⚠️ Important
 
-### User Model `user.model.js`
+- Your database must contain a role record with:
 
+```json
+
+{
+  "name": "user"
+}
+
+
+```
+
+Example valid roles:
+
+- `admin`
+
+- `developer`
+
+- `user` ✅ (required)
+
+
+### User Model `(models/user.model.js)`
 
 ```js
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     fullName: { type: String, trim: true },
     username: { type: String, unique: true, lowercase: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true },
     isActive: { type: Boolean, default: true },
+    login_attempt: { type: Number, default: 0 },
+    lastLoginAttemptAt: { type: Date },
     lastLogin: Date,
-}, { timestamps: true });
+});
 
-module.exports = mongoose.model("User", userSchema);
-
+module.exports = mongoose.model('User', UserSchema);
 
 ```
 
-### User Logs Model `userlog.model.js`
+### User Logs Model `(models/userlog.model.js)`
 
 ```js
 
@@ -110,12 +162,8 @@ const UserlogsSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    ipAddress: {
-        type: String
-    },
-    userAgent: {
-        type: String
-    },
+    ipAddress: String,
+    userAgent: String,
     metadata: {
         type: Object,
         default: {}
@@ -127,8 +175,7 @@ module.exports = mongoose.model('Userlogs', UserlogsSchema);
 
 ```
 
-
-### User OTP Model `userotp.model.js`
+### User OTP Model `(models/userotp.model.js)`
 
 ```js
 
@@ -144,44 +191,62 @@ const UserOTPSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const UserOTP = mongoose.model('UserOTP', UserOTPSchema);
-
-module.exports = UserOTP;
+module.exports = mongoose.model('UserOTP', UserOTPSchema);
 
 
 ```
 
-- ⚠️ OTP records automatically expire after 15 minutes (900 seconds).
+- ⏱️ OTP records auto-expire after 15 minutes (900 seconds).
 
-## Express Usage
 
-- in your route (`auth.route.js`) file
+## 🚀 Express Route Usage
+
+- Create or update `routes/auth.route.js` in your backend:
 
 ```js
 
-const { AuthController } = require("your-package-name");
+const express = require("express");
+const router = express.Router();
 
-router.post("/auth/create-auth", AuthController.createAuth);
+const { AuthController } = require("@jehankandy/auth-core-db");
+
+router.post("/create-auth", AuthController.createAuth);
+router.post("/verify-otp", AuthController.verifyOTP);
+
+module.exports = router;
 
 
 ```
 
-## Important Notes
+- Mount the route in your main app:
+
+```js
+
+app.use("/auth", require("./routes/auth.route"));
+
+```
+
+
+## ⚠️ Important Notes
 
 - MongoDB must be running
 
-- Required models must exist
+- All required models must exist
 
-- Default role user must be created manually
+- A user role record must exist
 
 - JWT secret must be set
 
-- Email OTP dependency must be installed
+- Email credentials must be valid
 
-## Author
+- OTP emails are sent automatically
+
+## 👤 Author
 
 - Jehan Weerasuriya
+Creator of JKCSS, CoconutDB, and enterprise backend frameworks
 
-## License
 
-- [MIT License](https://github.com/BackendExpert/auth-core-db/blob/master/LICENSE)
+📄 License
+
+[MIT License]()

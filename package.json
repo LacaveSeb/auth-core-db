@@ -1,5 +1,5 @@
 {
-  "name": "auth-core-db",
+  "name": "@jehankandy/auth-core-db",
   "version": "1.0.0",
   "description": "Auth with Password-less",
   "homepage": "https://github.com/BackendExpert/auth-core-db#readme",
