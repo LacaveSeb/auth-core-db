@@ -25,7 +25,13 @@
     "2026",
     "Fullstack",
     "javascript",
-    "js"
+    "js",
+    "auth",
+    "otp",
+    "email-auth",
+    "mongodb",
+    "jwt",
+    "nodejs"
   ],
   "dependencies": {
     "crypto": "^1.0.1",
