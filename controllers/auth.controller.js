@@ -2,7 +2,7 @@ const {
     CreateAuthDTO,
     VerifyOTPDTO,
     ErrorResDTO
-} = require("../dtos/auth.dto");
+} = require("../dto/auth.dto");
 const AuthService = require("../services/auth.service");
 
 const AuthController = {

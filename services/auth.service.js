@@ -6,16 +6,16 @@ const MAX_ATTEMPTS = 5;
 // const Role = require("../models/role.model")
 // const UserOTP = require("../models/userotp.model")
 
-const User = require("../models/user.model")
-const Role = require("../models/role.model")
-const UserOTP = require("../models/userotp.model")
+const User = require("../../../models/user.model")
+const Role = require("../../../models/role.model")
+const UserOTP = require("../../../models/userotp.model")
 
 // dtos
 const {
     CreateAccountResDTO,
     CreateLoginResDTO,
     VerifyLoginResDTO
-} = require("../dtos/auth.dto")
+} = require("../dto/auth.dto")
 
 // genrate otp util
 const { genarateOTP } = require("../utils/others/genarateOTP")
