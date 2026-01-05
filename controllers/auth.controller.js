@@ -1,7 +1,8 @@
 const {
-    ErrorResDTO,
-    CreateAuthDto
-} = require("../dto/auth.dto");
+    CreateAuthDTO,
+    VerifyOTPDTO,
+    ErrorResDTO
+} = require("../dtos/auth.dto");
 const AuthService = require("../services/auth.service");
 
 const AuthController = {
@@ -9,14 +10,37 @@ const AuthController = {
         try {
             const { email } = req.body
 
-            const dto = CreateAuthDto(email)
+            const dto = CreateAuthDTO(email)
 
-            const result = await AuthService.CreateAuth(
+            const result = await AuthService.createAuth(
                 dto.email,
                 req
             )
 
             res.status(200).json(result)
+        }
+        catch (err) {
+            return res.status(400).json(ErrorResDTO(err.message));
+        }
+    },
+
+    verifyOTP: async (req, res) => {
+        try {
+            const token = req.header("Authorization")?.replace("Bearer ", "");
+            if (!token) return res.status(401).json({ message: "Access denied" });
+
+            const { otp } = req.body
+
+            const dto = VerifyOTPDTO(token, otp)
+
+            const result = await AuthService.verifyOTP(
+                dto.token,
+                dto.otp,
+                req
+            )
+
+            res.status(200).json(result)
+
         }
         catch (err) {
             return res.status(400).json(ErrorResDTO(err.message));
