@@ -81,6 +81,14 @@ class AuthService {
         return CreateLoginResDTO();
 
     }
+
+    static async verifyPassword (email, otp, req){
+
+    }
+
+
+
+
 }
 
 module.exports = AuthService
