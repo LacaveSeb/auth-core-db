@@ -17,6 +17,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "Backend",
+    "NodeJS",
+    "express",
+    "nestJS",
+    "2026",
+    "Fullstack",
+    "javascript",
+    "js"
+  ],
   "dependencies": {
     "crypto": "^1.0.1",
     "express": "^5.2.1",
