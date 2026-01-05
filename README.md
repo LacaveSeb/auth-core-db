@@ -249,4 +249,4 @@ Creator of JKCSS, CoconutDB, and enterprise backend frameworks
 
 📄 License
 
-[MIT License]()
+[MIT License](https://github.com/BackendExpert/auth-core-db/blob/master/LICENSE)
